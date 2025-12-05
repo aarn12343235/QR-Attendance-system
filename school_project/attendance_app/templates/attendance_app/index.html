@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartAttend System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .role-card { 
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: 18rem;
+            width: 100%;
+        }
+        @media (min-width: 768px) {
+            .role-card { width: 18rem; }
+        }
+        .role-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
+
+    <nav class="bg-indigo-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="showPage('landing')">
+                    <i data-lucide="qr-code" class="w-6 h-6"></i>
+                    <span class="font-bold text-lg tracking-tight">SmartAttend</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-4xl relative">
+        
+        <!-- PAGE: LANDING -->
+        <section id="page-landing" class="fade-in flex flex-col items-center justify-center min-h-[60vh]">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome to SmartAttend</h1>
+                <p class="text-gray-500">Please select your role</p>
+            </div>
+            <div class="flex flex-col md:flex-row gap-6">
+                <div onclick="showPage('login-student')" class="role-card group hover:ring-2 hover:ring-indigo-500">
+                    <div class="flex flex-col items-center mt-4">
+                        <div class="bg-indigo-100 p-4 rounded-full mb-4 group-hover:bg-indigo-600 transition duration-300">
+                            <i data-lucide="graduation-cap" class="w-8 h-8 text-indigo-600 group-hover:text-white transition"></i>
+                        </div>
+                        <p class="text-gray-500 text-sm text-center px-4">Generate digital pass & view ID.</p>
+                    </div>
+                    <button class="bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold shadow-md w-full mt-4">Student Portal</button>
+                </div>
+                <div onclick="showPage('login-teacher')" class="role-card group hover:ring-2 hover:ring-purple-500">
+                    <div class="flex flex-col items-center mt-4">
+                        <div class="bg-purple-100 p-4 rounded-full mb-4 group-hover:bg-purple-600 transition duration-300">
+                            <i data-lucide="users" class="w-8 h-8 text-purple-600 group-hover:text-white transition"></i>
+                        </div>
+                        <p class="text-gray-500 text-sm text-center px-4">Scan QR codes & track attendance.</p>
+                    </div>
+                    <button class="bg-purple-600 text-white px-6 py-3 rounded-xl font-bold shadow-md w-full mt-4">Teacher Portal</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE: STUDENT LOGIN -->
+        <section id="page-login-student" class="hidden fade-in">
+            <div class="flex flex-col items-center justify-center pt-8">
+                <button onclick="showPage('landing')" class="self-start mb-4 text-gray-500 hover:text-indigo-600 flex items-center">
+                    <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i> Back
+                </button>
+                <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">
+                    <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Student Login</h2>
+                    <form onsubmit="handleStudentLogin(event)" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" id="s-firstname" placeholder="First Name" class="w-full px-4 py-2 border rounded-lg" required>
+                            <input type="text" id="s-lastname" placeholder="Last Name" class="w-full px-4 py-2 border rounded-lg" required>
+                        </div>
+                        <input type="text" id="s-id" placeholder="ID Number" class="w-full px-4 py-2 border rounded-lg" required>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" id="s-course" placeholder="Course" class="w-full px-4 py-2 border rounded-lg" required>
+                            <input type="text" id="s-level" placeholder="Level" class="w-full px-4 py-2 border rounded-lg" required>
+                        </div>
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg mt-4">Generate Pass</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE: TEACHER LOGIN -->
+        <section id="page-login-teacher" class="hidden fade-in">
+            <div class="flex flex-col items-center justify-center pt-8">
+                <button onclick="showPage('landing')" class="self-start mb-4 text-gray-500 hover:text-indigo-600 flex items-center">
+                    <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i> Back
+                </button>
+                <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">
+                    <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Teacher Login</h2>
+                    <form onsubmit="handleTeacherLogin(event)" class="space-y-4">
+                         <div class="grid grid-cols-2 gap-4">
+                            <input type="text" id="t-firstname" placeholder="First Name" class="w-full px-4 py-2 border rounded-lg" required>
+                            <input type="text" id="t-lastname" placeholder="Last Name" class="w-full px-4 py-2 border rounded-lg" required>
+                        </div>
+                        <input type="text" id="t-id" placeholder="ID Number" class="w-full px-4 py-2 border rounded-lg" required>
+                        <input type="text" id="t-subject" placeholder="Subject Handle" class="w-full px-4 py-2 border rounded-lg" required>
+                        <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg mt-4">Access Dashboard</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE: STUDENT DASHBOARD -->
+        <section id="page-student" class="hidden fade-in">
+            <div class="flex flex-col items-center">
+                <div class="text-center mb-8"><h1 class="text-3xl font-bold text-gray-800">Digital Pass</h1></div>
+                <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden">
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6 text-white text-center">
+                        <h2 id="card-name" class="text-2xl font-bold">Name</h2>
+                        <p id="card-course-level" class="opacity-80 text-sm uppercase tracking-widest mt-1">COURSE - LEVEL</p>
+                    </div>
+                    <div class="p-8 flex flex-col items-center bg-white">
+                        <img id="card-qr" src="" alt="QR" class="w-48 h-48 rounded-lg mix-blend-multiply opacity-90 mb-4 border-4 border-gray-100">
+                        <div class="bg-indigo-50 px-4 py-2 rounded-lg w-full text-center">
+                            <span class="text-xs text-indigo-400 font-bold uppercase">ID Number</span>
+                            <p id="card-id" class="text-xl font-mono font-bold text-indigo-700">0000</p>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="showPage('landing')" class="mt-8 text-gray-400 hover:text-gray-600 flex items-center"><i data-lucide="log-out" class="w-4 h-4 mr-2"></i>Log Out</button>
+            </div>
+        </section>
+
+        <!-- PAGE: TEACHER DASHBOARD -->
+        <section id="page-teacher" class="hidden fade-in">
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 flex justify-between items-center">
+                    <div>
+                        <h2 id="teacher-name" class="text-xl font-bold text-gray-800">Teacher</h2>
+                        <span id="teacher-subject" class="text-indigo-600 font-medium">Subject</span>
+                    </div>
+                    <button onclick="showPage('landing')" class="text-xs text-red-400 font-bold uppercase">Log Out</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <h3 class="text-gray-500 text-sm font-medium uppercase">Present</h3>
+                        <p id="present-count" class="text-4xl font-bold text-indigo-600 mt-2">0</p>
+                    </div>
+                    <div onclick="toggleScanner()" class="bg-indigo-600 p-6 rounded-2xl shadow-lg cursor-pointer hover:bg-indigo-700 text-white flex items-center justify-between">
+                        <div><h3 class="font-bold text-lg">Scan QR</h3><p class="text-indigo-200 text-sm">Open camera</p></div>
+                        <i data-lucide="camera" class="w-8 h-8"></i>
+                    </div>
+                </div>
+
+                <div id="scanner-wrapper" class="hidden relative bg-black rounded-3xl overflow-hidden shadow-2xl">
+                    <div id="reader" class="w-full h-full min-h-[300px]"></div>
+                    <button onclick="toggleScanner()" class="absolute top-4 right-4 bg-white/20 text-white p-2 rounded-full"><i data-lucide="x" class="w-6 h-6"></i></button>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-6 border-b border-gray-50"><h2 class="font-bold text-gray-800">Log</h2></div>
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 text-gray-500 text-xs uppercase"><tr><th class="px-6 py-4">Time</th><th class="px-6 py-4">Name</th><th class="px-6 py-4">Status</th></tr></thead>
+                        <tbody id="attendance-list" class="divide-y divide-gray-100"><tr id="empty-state"><td colspan="3" class="px-6 py-12 text-center text-gray-400">No scans yet.</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        window.addEventListener('load', () => lucide.createIcons());
+        let html5QrcodeScanner = null;
+        let presentCount = 0;
+
+        // --- NEW: FETCH FUNCTIONS to talk to Django ---
+
+        async function handleStudentLogin(e) {
+            e.preventDefault();
+            const payload = {
+                firstname: document.getElementById('s-firstname').value,
+                lastname: document.getElementById('s-lastname').value,
+                id: document.getElementById('s-id').value,
+                course: document.getElementById('s-course').value,
+                level: document.getElementById('s-level').value,
+            };
+
+            // Call Django API
+            const response = await fetch('/api/login/student/', {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            });
+            const data = await response.json();
+
+            if(data.status === 'success') {
+                // Render Dashboard
+                document.getElementById('card-name').innerText = payload.firstname + ' ' + payload.lastname;
+                document.getElementById('card-course-level').innerText = `${payload.course} • Year ${payload.level}`;
+                document.getElementById('card-id').innerText = payload.id;
+                document.getElementById('card-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${payload.id}`;
+                showPage('student');
+            } else {
+                alert('Login Failed');
+            }
+        }
+
+        async function handleTeacherLogin(e) {
+            e.preventDefault();
+            const payload = {
+                firstname: document.getElementById('t-firstname').value,
+                lastname: document.getElementById('t-lastname').value,
+                id: document.getElementById('t-id').value,
+                subject: document.getElementById('t-subject').value,
+            };
+
+            const response = await fetch('/api/login/teacher/', {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            });
+            const data = await response.json();
+
+            if(data.status === 'success') {
+                document.getElementById('teacher-name').innerText = payload.firstname + ' ' + payload.lastname;
+                document.getElementById('teacher-subject').innerText = payload.subject;
+                showPage('teacher');
+            }
+        }
+
+        async function sendScanToBackend(id) {
+            const response = await fetch('/api/attendance/mark/', {
+                method: 'POST',
+                body: JSON.stringify({ student_id: id })
+            });
+            const data = await response.json();
+
+            if (data.status === 'success') {
+                const s = data.student;
+                const tbody = document.getElementById('attendance-list');
+                const empty = document.getElementById('empty-state');
+                if(empty) empty.remove();
+                
+                const time = new Date().toLocaleTimeString();
+                const row = `
+                    <tr class="hover:bg-green-50 transition bg-green-50">
+                        <td class="px-6 py-4 text-gray-500 font-mono text-sm">${time}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900">
+                            ${s.name} <div class="text-xs text-gray-400">${s.course_level}</div>
+                        </td>
+                        <td class="px-6 py-4"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Present</span></td>
+                    </tr>`;
+                tbody.innerHTML = row + tbody.innerHTML;
+                
+                presentCount++;
+                document.getElementById('present-count').innerText = presentCount;
+                alert(`✅ ${s.name} marked present!`);
+            } else {
+                alert(`❌ ${data.message}`);
+            }
+        }
+
+        // --- STANDARD UTILS ---
+        function showPage(pageId) {
+            document.querySelectorAll('section').forEach(el => el.classList.add('hidden'));
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+            if(pageId !== 'teacher' && html5QrcodeScanner) {
+                html5QrcodeScanner.clear();
+                document.getElementById('scanner-wrapper').classList.add('hidden');
+            }
+        }
+
+        function toggleScanner() {
+            const wrapper = document.getElementById('scanner-wrapper');
+            if (wrapper.classList.contains('hidden')) {
+                wrapper.classList.remove('hidden');
+                html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} }, false);
+                html5QrcodeScanner.render(onScanSuccess, (err) => {});
+            } else {
+                wrapper.classList.add('hidden');
+                if(html5QrcodeScanner) html5QrcodeScanner.clear();
+            }
+        }
+
+        function onScanSuccess(decodedText) {
+            toggleScanner();
+            sendScanToBackend(decodedText);
+        }
+    </script>
+</body>
+</html>
