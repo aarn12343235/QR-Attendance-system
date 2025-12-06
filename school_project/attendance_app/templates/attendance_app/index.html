@@ -24,7 +24,7 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            height: 18rem;
+            height: 20rem;
             width: 100%;
         }
         @media (min-width: 768px) {
@@ -43,7 +43,7 @@
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center space-x-2 cursor-pointer" onclick="showPage('landing')">
                     <i data-lucide="qr-code" class="w-6 h-6"></i>
-                    <span class="font-bold text-lg tracking-tight">SmartAttend</span>
+                    <span class="font-bold text-lg tracking-tight">Attendance System</span>
                 </div>
             </div>
         </div>
@@ -52,9 +52,9 @@
     <main class="flex-grow container mx-auto px-4 py-8 max-w-4xl relative">
         
         <!-- PAGE: LANDING -->
-        <section id="page-landing" class="fade-in flex flex-col items-center justify-center min-h-[60vh]">
+        <section id="page-landing" class="fade-in flex flex-col items-center justify-center min-h-[90vh]">
             <div class="text-center mb-10">
-                <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome to SmartAttend</h1>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome to Attendance System</h1>
                 <p class="text-gray-500">Please select your role</p>
             </div>
             <div class="flex flex-col md:flex-row gap-6">
@@ -92,10 +92,44 @@
                             <input type="text" id="s-firstname" placeholder="First Name" class="w-full px-4 py-2 border rounded-lg" required>
                             <input type="text" id="s-lastname" placeholder="Last Name" class="w-full px-4 py-2 border rounded-lg" required>
                         </div>
-                        <input type="text" id="s-id" placeholder="ID Number" class="w-full px-4 py-2 border rounded-lg" required>
+                        <input type="text" id="s-id" placeholder="ID Number" class="w-full px-4 py-2 border rounded-lg" required maxlength="10" inputmode="numeric" pattern="\d{1,10}" title="Enter up to 10 digits">
                         <div class="grid grid-cols-2 gap-4">
-                            <input type="text" id="s-course" placeholder="Course" class="w-full px-4 py-2 border rounded-lg" required>
-                            <input type="text" id="s-level" placeholder="Level" class="w-full px-4 py-2 border rounded-lg" required>
+                            <select id="s-course" class="w-full px-4 py-2 border rounded-lg" required>
+                                <option value="" disabled selected>Choose Course</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Information Technology">Information Technology</option>
+                                <option value="Business Administration">Business Administration</option>
+                                <option value="Computer Engineering"> Computer Engineering</option>
+                                <option value="Education">Education</option>
+                                <option value="Psychology">Psychology</option>
+                                <option value="Criminal Justice">Criminal Justice</option>  
+                                <option value="Hospitality Management">Hospitality Management</option>
+                                <option value="Tourism Management">Tourism Management</option>   
+                                <optiomn value="Marketing">Marketing</option>
+                                <option value="Entrepreneurship">Entrepreneurship</option>                      
+                                <option value="Nursing">Nursing</option>
+                                <option value="Medical Technology">Medical Technology</option>
+                                <option value="Pharmacy">Pharmacy</option>
+                                <option value="Radiologic Technology">Radiologic Technology</option>
+                                <option value="Physical Therapy">Physical Therapy</option>
+                                <option value="Dentistry">Dentistry</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Electrical Engineering">Electrical Engineering</option>
+                                <option value="Architecture">Architecture</option>
+                                <option value="Interior Design">Interior Design</option>
+                                <option value="Accountancy">Accountancy</option>
+                                <option value="Financial Management">Financial Management</option>
+
+                            </select>
+                            <select id="s-level" class="w-full px-4 py-2 border rounded-lg" required>
+                                <option value="" disabled selected>Choose Level</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
                         </div>
                         <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg mt-4">Generate Pass</button>
                     </form>
@@ -116,8 +150,23 @@
                             <input type="text" id="t-firstname" placeholder="First Name" class="w-full px-4 py-2 border rounded-lg" required>
                             <input type="text" id="t-lastname" placeholder="Last Name" class="w-full px-4 py-2 border rounded-lg" required>
                         </div>
-                        <input type="text" id="t-id" placeholder="ID Number" class="w-full px-4 py-2 border rounded-lg" required>
-                        <input type="text" id="t-subject" placeholder="Subject Handle" class="w-full px-4 py-2 border rounded-lg" required>
+                        <input type="text" id="t-id" placeholder="ID Number" class="w-full px-4 py-2 border rounded-lg" required maxlength="10" inputmode="numeric" pattern="\d{1,10}" title="Enter up to 10 digits">
+                        <select id="t-subject" class="w-full px-4 py-2 border rounded-lg" required>
+                            <option value="" disabled selected>Select Subject</option>
+                            <option value="Eldroid1">Eldroid1</option>
+                            <option value="Rescom31">Rescom31</option>
+                            <option value="English">English</option>
+                            <option value="Comprog">Comprog</option>
+                            <option value="IMDBSYS31">IMDBSYS31</option>
+                            <option value="Rizal 101">Rizal 101</option>
+                            <option value="DASTRUCT21">DASTRUCT21</option>
+                            <option value="DISCRET21">DISCRET21</option>
+                            <option value="SOCIO101">SOCIO101</option>
+                            <option value="PE103">PE103</option>
+                            <option value="SOFTENG31">SOFTENG31</option>
+                            <option value="FREAI">FREAI</option>
+                        
+                        </select>
                         <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg mt-4">Access Dashboard</button>
                     </form>
                 </div>
@@ -189,7 +238,7 @@
         let html5QrcodeScanner = null;
         let presentCount = 0;
 
-        // --- NEW: FETCH FUNCTIONS to talk to Django ---
+  
 
         async function handleStudentLogin(e) {
             e.preventDefault();
