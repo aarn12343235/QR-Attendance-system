@@ -16,19 +16,15 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-*@v3@$b7%m8a&vo51&h*sf)bt)n5ux#wreai-z$$&da8klo3&u'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# ALLOWS ALL HOSTS FOR TESTING PURPOSES RANI SIYA
+ALLOWED_HOSTS = ['*']
+#ERICA'S NGOK URL, DOWNLOAD SA UG NGOK TAS I PASTE IMOHANG URL HERE
+CSRF_TRUSTED_ORIGINS = ['https://repeatedly-omnipresent-aaden.ngrok-free.dev']
 
-ALLOWED_HOSTS = []
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
